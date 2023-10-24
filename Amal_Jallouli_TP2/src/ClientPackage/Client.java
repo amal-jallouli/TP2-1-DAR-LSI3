@@ -1,0 +1,43 @@
+package ClientPackage ; 
+
+import java.io.*;
+import java.net.Socket;
+import java.util.Scanner;
+import java.net.InetAddress;
+import java.net.InetSocketAddress;
+
+public class Client {
+    public static void main(String[] args)
+    {
+        try
+        {
+            InetAddress IA = InetAddress.getByName("192.168.147.20");
+            InetSocketAddress ISA = new InetSocketAddress(IA,1234);
+            Socket s = new Socket();
+            s.connect(ISA);
+            InputStream input = s.getInputStream();
+            OutputStream output = s.getOutputStream();
+            InputStreamReader isr = new InputStreamReader(input);
+            BufferedReader br = new BufferedReader(isr);
+            Scanner scanner = new Scanner(System.in);
+            System.out.println("donner nb1 = ");
+            String nb1 = scanner.nextLine();
+            System.out.println("donner nb2 = ");
+            String nb2 = scanner.nextLine();
+            String op;
+            do{
+                System.out.println("donner op = ");
+                op = scanner.nextLine();
+            }while(!(op.equals("+")) && !(op.equals("-")) && !(op.equals("*")) && !(op.equals("/")));
+            PrintWriter pw = new PrintWriter(output,true);
+            pw.println(nb1);
+            pw.println(nb2);
+            pw.println(op);
+            System.out.println(br.readLine());
+            s.close();
+            scanner.close(); 
+        }catch(Exception e){
+            System.out.println(e.getMessage());
+        }
+    }
+}
